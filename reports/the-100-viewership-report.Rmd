@@ -13,7 +13,7 @@ output:
 *The 100* is a post-apocalyptic science fiction drama that premiered on The CW in 2014.
 The show follows young survivors sent from a space habitat back to Earth to test whether the planet is habitable again.
 
-![The *100* title card](https://upload.wikimedia.org/wikipedia/en/7/73/The_100_title_card.jpg)
+![The 100 title card](https://upload.wikimedia.org/wikipedia/en/7/73/The_100_title_card.jpg)
 
 Source: [Wikipedia — *The 100*](https://en.wikipedia.org/wiki/The_100_(TV_series))
 
@@ -32,7 +32,7 @@ viewership <- data.frame(
 viewership
 ```
 
-Source: [Wikipedia — *The 100* episodes table](https://en.wikipedia.org/wiki/List_of_The_100_episodes)
+Source: [Wikipedia — List of *The 100* episodes](https://en.wikipedia.org/wiki/List_of_The_100_episodes)
 
 ## Basic statistics
 
