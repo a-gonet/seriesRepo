@@ -1,0 +1,21 @@
+---
+title: "Series: The 100"
+author: "AG"
+date: "2026-05-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## About the Series
+
+*The 100* is an American post-apocalyptic science fiction drama developed by *Jason Rothenberg*. The show is loosely based on the novel series written by *Kass Morgan*.
+
+The story begins ninety-seven years after a devastating nuclear apocalypse wiped out almost all life on Earth. The only known survivors lived on a massive space station known as the 'Ark'. Facing failing life-support systems, the Ark's leaders send 100 juvenile delinquents down to the surface to determine if Earth has become habitable again.
+
+As these teens, including *Clarke Griffin*, *Bellamy Blake*, *Octavia Blake*, and *Raven Reyes*, struggle to survive the harsh conditions of the ground, they soon discover they are not alone. They must navigate complex relationships and moral dilemmas while encountering groups such as the *Grounders*, *Mountain Men*, and various factions vying for survival in a reclaimed world.
+
+Over the course of seven seasons, *The 100* explores themes of survival, sacrifice, and the lengths humanity will go to in order to ensure its future.
+
