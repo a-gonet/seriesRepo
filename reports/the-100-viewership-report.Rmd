@@ -1,0 +1,100 @@
+---
+title: "The 100: Viewership Snapshot"
+author: "seriesRepo"
+date: "`r format(Sys.Date())`"
+output:
+  html_document:
+    toc: true
+    theme: cosmo
+---
+
+## Brief description
+
+*The 100* is a post-apocalyptic science fiction drama that premiered on The CW in 2014.
+The show follows young survivors sent from a space habitat back to Earth to test whether the planet is habitable again.
+
+![The *100* title card](https://upload.wikimedia.org/wikipedia/en/7/73/The_100_title_card.jpg)
+
+Source: [Wikipedia — *The 100*](https://en.wikipedia.org/wiki/The_100_(TV_series))
+
+## Viewership data used in this report
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+```{r data}
+viewership <- data.frame(
+  season = 1:7,
+  avg_viewers_millions = c(2.69, 1.81, 1.58, 0.95, 0.87, 0.76, 0.58)
+)
+
+viewership
+```
+
+Source: [Wikipedia — *The 100* episodes table](https://en.wikipedia.org/wiki/List_of_The_100_episodes)
+
+## Basic statistics
+
+```{r stats}
+summary_stats <- data.frame(
+  metric = c("Maximum average season viewership (M)",
+             "Minimum average season viewership (M)",
+             "Mean average season viewership (M)",
+             "Total drop from Season 1 to Season 7 (M)"),
+  value = c(
+    max(viewership$avg_viewers_millions),
+    min(viewership$avg_viewers_millions),
+    round(mean(viewership$avg_viewers_millions), 2),
+    round(viewership$avg_viewers_millions[1] - tail(viewership$avg_viewers_millions, 1), 2)
+  )
+)
+
+summary_stats
+```
+
+## Graph: Viewership over time
+
+```{r plot-trend, fig.width=8, fig.height=4.5}
+plot(
+  viewership$season,
+  viewership$avg_viewers_millions,
+  type = "b",
+  pch = 19,
+  lwd = 2,
+  col = "#1f77b4",
+  xlab = "Season",
+  ylab = "Average viewers (millions)",
+  main = "The 100: Average season viewership"
+)
+grid()
+```
+
+## Graph: Season-to-season changes
+
+```{r plot-delta, fig.width=8, fig.height=4.5}
+season_change <- diff(viewership$avg_viewers_millions)
+bar_cols <- ifelse(season_change < 0, "#d62728", "#2ca02c")
+
+barplot(
+  season_change,
+  names.arg = paste0("S", 1:6, "→S", 2:7),
+  col = bar_cols,
+  border = NA,
+  ylab = "Change in average viewers (millions)",
+  main = "Season-to-season change in average viewership"
+)
+abline(h = 0, lty = 2)
+```
+
+## Observed changes
+
+**AI-generated section (manually verified):**
+The overall trend is a steady decrease in average season viewership. For example, average viewership decreased by **`r round(viewership$avg_viewers_millions[3] - viewership$avg_viewers_millions[5], 2)` million** between Season 3 and Season 5 (from **`r viewership$avg_viewers_millions[3]`M** to **`r viewership$avg_viewers_millions[5]`M**), which is about **`r round((viewership$avg_viewers_millions[3] - viewership$avg_viewers_millions[5]) / viewership$avg_viewers_millions[3] * 100, 1)`%**.
+
+A larger decline is visible from Season 1 to Season 4, followed by smaller declines in later seasons.
+
+## References
+
+1. [*The 100* (TV series) — Wikipedia](https://en.wikipedia.org/wiki/The_100_(TV_series))
+2. [List of *The 100* episodes — Wikipedia](https://en.wikipedia.org/wiki/List_of_The_100_episodes)

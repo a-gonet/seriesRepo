@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="420" viewBox="0 0 800 420">
+<rect width="100%" height="100%" fill="white"/>
+<text x="400.0" y="20" text-anchor="middle" font-family="Arial" font-size="18">The 100: Average season viewership</text>
+<line x1="60" y1="370" x2="780" y2="370" stroke="#333"/>
+<line x1="60" y1="30" x2="60" y2="370" stroke="#333"/>
+<line x1="60" y1="382.9" x2="780" y2="382.9" stroke="#e5e5e5"/>
+<text x="50" y="386.9" text-anchor="end" font-family="Arial" font-size="11">0.5</text>
+<line x1="60" y1="302.3" x2="780" y2="302.3" stroke="#e5e5e5"/>
+<text x="50" y="306.3" text-anchor="end" font-family="Arial" font-size="11">1.0</text>
+<line x1="60" y1="221.8" x2="780" y2="221.8" stroke="#e5e5e5"/>
+<text x="50" y="225.8" text-anchor="end" font-family="Arial" font-size="11">1.5</text>
+<line x1="60" y1="141.2" x2="780" y2="141.2" stroke="#e5e5e5"/>
+<text x="50" y="145.2" text-anchor="end" font-family="Arial" font-size="11">2.0</text>
+<line x1="60" y1="60.6" x2="780" y2="60.6" stroke="#e5e5e5"/>
+<text x="50" y="64.6" text-anchor="end" font-family="Arial" font-size="11">2.5</text>
+<text x="60.0" y="390" text-anchor="middle" font-family="Arial" font-size="11">1</text>
+<text x="180.0" y="390" text-anchor="middle" font-family="Arial" font-size="11">2</text>
+<text x="300.0" y="390" text-anchor="middle" font-family="Arial" font-size="11">3</text>
+<text x="420.0" y="390" text-anchor="middle" font-family="Arial" font-size="11">4</text>
+<text x="540.0" y="390" text-anchor="middle" font-family="Arial" font-size="11">5</text>
+<text x="660.0" y="390" text-anchor="middle" font-family="Arial" font-size="11">6</text>
+<text x="780.0" y="390" text-anchor="middle" font-family="Arial" font-size="11">7</text>
+<polyline points="60.0,30.0 180.0,171.8 300.0,208.9 420.0,310.4 540.0,323.3 660.0,341.0 780.0,370.0" fill="none" stroke="#1f77b4" stroke-width="3"/>
+<circle cx="60.0" cy="30.0" r="4" fill="#1f77b4"/>
+<circle cx="180.0" cy="171.8" r="4" fill="#1f77b4"/>
+<circle cx="300.0" cy="208.9" r="4" fill="#1f77b4"/>
+<circle cx="420.0" cy="310.4" r="4" fill="#1f77b4"/>
+<circle cx="540.0" cy="323.3" r="4" fill="#1f77b4"/>
+<circle cx="660.0" cy="341.0" r="4" fill="#1f77b4"/>
+<circle cx="780.0" cy="370.0" r="4" fill="#1f77b4"/>
+<text x="400.0" y="410" text-anchor="middle" font-family="Arial" font-size="12">Season</text>
+<text x="20" y="210.0" text-anchor="middle" font-family="Arial" font-size="12" transform="rotate(-90 20 210.0)">Average viewers (millions)</text>
+</svg>
