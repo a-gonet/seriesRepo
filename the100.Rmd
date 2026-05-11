@@ -12,7 +12,26 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(knitr)
+library(kableExtra)
 ```
+
+<style>
+/* Custom styling for The 100 aesthetic
+ AI (Gemini 3) was used to set those*/
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fcfcfc; }
+h1, h2, h3 { color: #245557; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+.stat-box { 
+  background-color: #f4f4f4; 
+  padding: 15px; 
+  border-radius: 8px; 
+  border-left: 5px solid #EE7315; 
+  margin: 20px 0;
+}
+</style>
 
 ## About the Series
 
@@ -32,8 +51,6 @@ Over the course of seven seasons, *The 100* explores themes of survival, sacrifi
 
 ---
 
----
-
 <center>
 <img src="the100-season4-episode1.jpg" width="600px">
 </center>
@@ -44,15 +61,7 @@ Over the course of seven seasons, *The 100* explores themes of survival, sacrifi
 
 The series debuted on March 19, 2014, with a strong pilot episode that garnered **2.73 million** viewers. Over its seven-season run, the show transitioned from a high-stakes survival drama to a complex exploration of tribalism, technology, and morality.
 
-# Viewership Over Time
-
-The graph below tracks the U.S. viewership (in millions) for every episode of the series. While there is a clear downward trend common in long-running cable dramas, the show maintained a dedicated cult following.
-
 ```{r season_summary, echo=FALSE, message=FALSE, warning=FALSE}
-
-if (!require("knitr")) install.packages("knitr")
-library(knitr)
-
 season_data <- data.frame(
   Season = 1:7,
   Episodes = c(13, 16, 16, 13, 13, 13, 16),
@@ -69,9 +78,8 @@ kable(season_data,
       align = "cccccc")
 ```
 
-```{r viewership_trend, echo=FALSE, fig.width=10, fig.height=6, message=FALSE, warning=FALSE}
-library(ggplot2)
-
+# Viewership Over Time
+```{r average_bar_chart, echo=FALSE, fig.width=8, fig.height=5, message=FALSE, warning=FALSE}
 viewers <- c(2.73, 2.27, 1.90, 1.69, 1.80, 1.97, 1.88, 1.64, 1.73, 1.46, 1.71, 1.58, 1.68,
              1.54, 1.48, 1.68, 1.75, 1.64, 1.86, 1.62, 1.40, 1.48, 1.53, 1.51, 1.36, 1.42, 1.55, 1.49, 1.34,
              1.88, 1.63, 1.57, 1.32, 1.36, 1.41, 1.39, 1.20, 1.23, 1.13, 1.08, 1.15, 1.27, 1.13, 1.17, 1.29,
@@ -83,34 +91,6 @@ viewers <- c(2.73, 2.27, 1.90, 1.69, 1.80, 1.97, 1.88, 1.64, 1.73, 1.46, 1.71, 1
 seasons <- c(rep("1", 13), rep("2", 16), rep("3", 16), rep("4", 13), rep("5", 13), rep("6", 13), rep("7", 16))
 df <- data.frame(Episode = 1:100, Viewers = viewers, Season = seasons)
 
-# Line chart
-ggplot(df, aes(x = Episode, y = Viewers, color = Season)) +
-  geom_line(size = 1.2, alpha = 0.7) +
-  geom_point(size = 2) +
-  scale_color_manual(values = c("#2A4D53", "#5C584F", "#92A8AC", "#D96C1A", "#3E4A59", "#A69CAC", "#1F663B")) +
-  labs(title = "The 100: U.S. Viewership Trend (100 Episodes)",
-       y = "Viewers (Millions)", x = "Episode Number") +
-  theme_minimal() +
-  theme(panel.grid.minor = element_blank())
-```
-
-```{r season_boxplot, echo=FALSE, fig.width=8, fig.height=5, message=FALSE, warning=FALSE}
-library(ggplot2)
-
-# Boxplot
-ggplot(df, aes(x = Season, y = Viewers, fill = Season)) +
-  geom_boxplot(alpha = 0.8, outlier.color = "red") +
-  scale_fill_manual(values = c("#2A4D53", "#5C584F", "#92A8AC", "#D96C1A", "#3E4A59", "#A69CAC", "#1F663B")) +
-  labs(title = "Viewership Distribution per Season",
-       y = "Viewers (Millions)", x = "Season") +
-  theme_classic() +
-  theme(legend.position = "none")
-```
-
-```{r average_bar_chart, echo=FALSE, fig.width=8, fig.height=5, message=FALSE, warning=FALSE}
-library(dplyr)
-library(ggplot2)
-
 # Averages
 seasonal_avg <- df %>%
   group_by(Season) %>%
@@ -120,7 +100,7 @@ seasonal_avg <- df %>%
 ggplot(seasonal_avg, aes(x = Season, y = MeanViewers, fill = Season)) +
   geom_bar(stat = "identity", color = "white", width = 0.7) +
   geom_text(aes(label = round(MeanViewers, 2)), vjust = -0.5, size = 4) +
-  scale_fill_manual(values = c("#2A4D53", "#5C584F", "#92A8AC", "#D96C1A", "#3E4A59", "#A69CAC", "#1F663B")) +
+  scale_fill_brewer(palette = "Dark2") +
   labs(title = "Average Viewership per Season",
        y = "Average Viewers (Millions)", x = "Season") +
   theme_minimal() +
@@ -128,11 +108,47 @@ ggplot(seasonal_avg, aes(x = Season, y = MeanViewers, fill = Season)) +
   ylim(0, 2.2)
 ```
 
-```{r ratings_heatmap, echo=FALSE, fig.width=10, fig.height=6}
-library(tidyr)
+```{r viewership_trend, echo=FALSE, fig.width=10, fig.height=6, message=FALSE, warning=FALSE}
+# Line chart
+ggplot(df, aes(x = Episode, y = Viewers, color = Season)) +
+  geom_line(size = 1.2, alpha = 0.7) +
+  geom_point(size = 2) +
+  scale_colour_brewer(palette = "Dark2") +
+  labs(title = "The 100: U.S. Viewership Trend (100 Episodes)",
+       y = "Viewers (Millions)", x = "Episode Number") +
+  theme_minimal() +
+  theme(panel.grid.minor = element_blank())
+```
 
+The graph above tracks the U.S. viewership (in millions) for every episode of the series. While there is a clear downward trend common in long-running cable dramas, the show maintained a dedicated cult following.
+
+The series peaked with the **Pilot (`r viewers[1]` million)** and concluded with **`r viewers[length(viewers)]` million**. However, the curve flattens significantly after Season 4, indicating that while the show lost casual viewers, it successfully retained a loyal core audience.
+
+```{r season_boxplot, echo=FALSE, fig.width=8, fig.height=5, message=FALSE, warning=FALSE}
+# Boxplot
+ggplot(df, aes(x = Season, y = Viewers, fill = Season)) +
+  geom_boxplot(alpha = 0.8, outlier.color = "red") +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(title = "Viewership Distribution per Season",
+       y = "Viewers (Millions)", x = "Season") +
+  theme_classic() +
+  theme(legend.position = "none")
+```
+
+The **Boxplot** provides insights into audience reliability:
+
+ * **Seasons 1-3:** High medians and high variance suggest a show finding its footing.
+
+ * **Seasons 4-5:** A "correction" period with smaller variance, reflecting critical reception.
+
+ * **Seasons 6-7:** Small "boxes" suggest a stabilized niche audience. Fans who watched these seasons were highly dedicated and unlikely to drop the series before the end.
+
+# Ratings over episodes
+```{r episode_rankings, echo=FALSE, message=FALSE, warning=FALSE}
 # Constructing a matrix of ratings (Seasons x Episodes)
 # NA values represent non-existent episodes (shorter seasons)
+
+# AI (Gemini 3) was used to rewrite data from source file to structured matrix format for plotting
 ratings_vals <- matrix(c(
   7.3, 7.3, 7.7, 7.7, 8.0, 7.8, 8.0, 7.7, 8.1, 8.1, 7.8, 8.3, 8.8, NA, NA, NA,
   8.2, 8.1, 8.1, 8.1, 8.3, 8.2, 8.4, 8.8, 8.1, 8.1, 8.6, 8.4, 8.5, 8.6, 8.7, 9.2,
@@ -146,6 +162,46 @@ ratings_vals <- matrix(c(
 colnames(ratings_vals) <- paste0("E", 1:16)
 rownames(ratings_vals) <- paste0("S", 1:7)
 
+# Transform the matrix into a long-format data frame
+rankings_df <- as.data.frame(ratings_vals) %>%
+  mutate(Season = rownames(ratings_vals)) %>%
+  tidyr::pivot_longer(cols = starts_with("E"), names_to = "Episode", values_to = "Rating") %>%
+  filter(!is.na(Rating)) %>%
+  # Create the S**E** format column
+  mutate(
+    Episode_ID = paste0(
+      # Ensure Season is S01, S02 etc.
+      gsub("S", "S0", Season), 
+      # Ensure Episode is E01, E02 etc.
+      gsub("E", "E", sprintf("E%02d", as.numeric(gsub("E", "", Episode))))
+    )
+  ) %>%
+  select(Episode_ID, Rating)
+
+# Get Top 5 and Bottom 5
+top_5 <- rankings_df %>% arrange(desc(Rating)) %>% head(5)
+bottom_5 <- rankings_df %>% arrange(Rating) %>% head(5)
+
+# Combine into one table with an empty separator column
+# AI (Gemini 3) was used to combine tables
+combined_table <- data.frame(
+  Top_Episode = top_5$Episode_ID,
+  Top_Rating = top_5$Rating,
+  Empty_Space = "",
+  Bottom_Episode = bottom_5$Episode_ID,
+  Bottom_Rating = bottom_5$Rating
+)
+
+# 4. Display the combined table
+kable(combined_table, 
+      col.names = c("Episode", "IMDb Rating", " ", "Episode", "IMDb Rating"), 
+      align = "lcclc") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F) %>%
+  add_header_above(c("Top Rated" = 2, " " = 1, "Bottom Rated" = 2)) %>%
+  column_spec(3, width = "3em")
+```
+
+```{r ratings_heatmap, echo=FALSE, fig.width=10, fig.height=6}
 # Reshape data to long format for ggplot2
 heatmap_df <- as.data.frame(ratings_vals) %>%
   mutate(Season = rownames(ratings_vals)) %>%
@@ -155,18 +211,24 @@ heatmap_df <- as.data.frame(ratings_vals) %>%
 heatmap_df$Episode <- factor(heatmap_df$Episode, levels = paste0("E", 1:16))
 heatmap_df$Season <- factor(heatmap_df$Season, levels = rev(paste0("S", 1:7)))
 
-# Create the heatmap using the 'Magma' color scale
+# Create the heatmap using the gradient color scale
 ggplot(heatmap_df, aes(x = Episode, y = Season, fill = Rating)) +
   geom_tile(color = "white") +
   scale_fill_gradient(
-  low = "#5C4033", high = "#FFD700",  na.value = "white",  # Set empty/missing episodes to white
+  low = "#5C4033", high = "#FFD700",  na.value = "white",
   name = "Rating"
 ) +
   # Add rating value labels inside the tiles
   geom_text(aes(label = sprintf("%.1f", Rating)), color = "white", size = 3.5, na.rm = TRUE) +
   labs(title = "Episode Ratings Heatmap",
-       subtitle = "Critical reception across the series (IMDb scores)",
-       x = "Episode Number", y = "Season") +
+       subtitle = "Critical reception across the series (IMDb scores)") +
   theme_minimal() +
+  theme(legend.position = "none") +
   theme(panel.grid = element_blank())
 ```
+
+The heatmap above visualizes the critical reception of each episode across all seasons, based on IMDb ratings. The color gradient from dark brown (lower ratings) to gold (higher ratings) allows for quick identification of standout episodes and trends in quality throughout the series. Notably, Season 5 contains some of the highest-rated episodes, while Season 7 shows a significant drop in ratings, particularly towards the end.
+
+The visualization highlights the show’s "Finale Strength," with standout episodes such as **`r top_5$Episode_ID[1]`** and **`r top_5$Episode_ID[2]`** receiving universal acclaim. In fact, the series reached its critical peak with a rating of **`r top_5$Rating[1]`**. 
+
+Conversely, it captures the controversy of the final season, specifically **`r bottom_5$Episode_ID[1]`**, which represents the lowest point in series reception with a rating of **`r bottom_5$Rating[1]`**. This demonstrates a significant disparity between the show's creative heights and its most divisive moments, as seen in the gap of **`r top_5$Rating[1] - bottom_5$Rating[1]`** points between the best and worst rated episodes.
