@@ -1,8 +1,13 @@
 ---
 title: "Series: The 100"
-author: "AG"
+author: "Adam Gonet"
 date: "2026-05-09"
-output: html_document
+output: 
+  html_document:
+    theme: lumen
+    highlight: tango
+    toc: true
+    toc_float: true
 ---
 
 ```{r setup, include=FALSE}
@@ -19,3 +24,149 @@ As these teens, including *Clarke Griffin*, *Bellamy Blake*, *Octavia Blake*, an
 
 Over the course of seven seasons, *The 100* explores themes of survival, sacrifice, and the lengths humanity will go to in order to ensure its future.
 
+---
+
+<center>
+<img src="logoThe100.png" width="400px">
+</center>
+
+---
+
+---
+
+<center>
+<img src="the100-season4-episode1.jpg" width="600px">
+</center>
+
+---
+
+# Viewership Statistics
+
+The series debuted on March 19, 2014, with a strong pilot episode that garnered **2.73 million** viewers. Over its seven-season run, the show transitioned from a high-stakes survival drama to a complex exploration of tribalism, technology, and morality.
+
+# Viewership Over Time
+
+The graph below tracks the U.S. viewership (in millions) for every episode of the series. While there is a clear downward trend common in long-running cable dramas, the show maintained a dedicated cult following.
+
+```{r season_summary, echo=FALSE, message=FALSE, warning=FALSE}
+
+if (!require("knitr")) install.packages("knitr")
+library(knitr)
+
+season_data <- data.frame(
+  Season = 1:7,
+  Episodes = c(13, 16, 16, 13, 13, 13, 16),
+  First_Released = c("March 19, 2014", "October 22, 2014", "January 21, 2016", 
+                     "February 1, 2017", "April 24, 2018", "April 30, 2019", "May 20, 2020"),
+  Last_Released = c("June 11, 2014", "March 11, 2015", "May 19, 2016", 
+                    "May 24, 2017", "August 7, 2018", "August 6, 2019", "September 30, 2020"),
+  Rank = c(150, 157, 165, 158, 182, 165, 179),
+  Avg_Viewers_Millions = c(2.59, 2.46, 1.94, 1.47, 1.61, 1.30, 1.06)
+)
+
+kable(season_data, 
+      col.names = c("Season", "Episodes", "First Released", "Last Released", "Rank", "Avg Viewers (Millions)"),
+      align = "cccccc")
+```
+
+```{r viewership_trend, echo=FALSE, fig.width=10, fig.height=6, message=FALSE, warning=FALSE}
+library(ggplot2)
+
+viewers <- c(2.73, 2.27, 1.90, 1.69, 1.80, 1.97, 1.88, 1.64, 1.73, 1.46, 1.71, 1.58, 1.68,
+             1.54, 1.48, 1.68, 1.75, 1.64, 1.86, 1.62, 1.40, 1.48, 1.53, 1.51, 1.36, 1.42, 1.55, 1.49, 1.34,
+             1.88, 1.63, 1.57, 1.32, 1.36, 1.41, 1.39, 1.20, 1.23, 1.13, 1.08, 1.15, 1.27, 1.13, 1.17, 1.29,
+             1.21, 1.01, 1.05, 1.00, 1.02, 0.98, 0.90, 0.97, 0.81, 0.85, 0.86, 0.83, 0.91,
+             1.43, 1.02, 1.08, 1.07, 0.94, 0.92, 0.83, 0.73, 0.89, 0.86, 0.85, 0.88, 0.99,
+             0.86, 0.81, 0.82, 0.73, 0.73, 0.64, 0.72, 0.63, 0.70, 0.57, 0.54, 0.61, 0.59,
+             0.80, 0.76, 0.71, 0.63, 0.68, 0.57, 0.64, 0.67, 0.61, 0.47, 0.58, 0.54, 0.59, 0.63, 0.52, 0.61)
+
+seasons <- c(rep("1", 13), rep("2", 16), rep("3", 16), rep("4", 13), rep("5", 13), rep("6", 13), rep("7", 16))
+df <- data.frame(Episode = 1:100, Viewers = viewers, Season = seasons)
+
+# Line chart
+ggplot(df, aes(x = Episode, y = Viewers, color = Season)) +
+  geom_line(size = 1.2, alpha = 0.7) +
+  geom_point(size = 2) +
+  scale_color_manual(values = c("#2A4D53", "#5C584F", "#92A8AC", "#D96C1A", "#3E4A59", "#A69CAC", "#1F663B")) +
+  labs(title = "The 100: U.S. Viewership Trend (100 Episodes)",
+       y = "Viewers (Millions)", x = "Episode Number") +
+  theme_minimal() +
+  theme(panel.grid.minor = element_blank())
+```
+
+```{r season_boxplot, echo=FALSE, fig.width=8, fig.height=5, message=FALSE, warning=FALSE}
+library(ggplot2)
+
+# Boxplot
+ggplot(df, aes(x = Season, y = Viewers, fill = Season)) +
+  geom_boxplot(alpha = 0.8, outlier.color = "red") +
+  scale_fill_manual(values = c("#2A4D53", "#5C584F", "#92A8AC", "#D96C1A", "#3E4A59", "#A69CAC", "#1F663B")) +
+  labs(title = "Viewership Distribution per Season",
+       y = "Viewers (Millions)", x = "Season") +
+  theme_classic() +
+  theme(legend.position = "none")
+```
+
+```{r average_bar_chart, echo=FALSE, fig.width=8, fig.height=5, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+
+# Averages
+seasonal_avg <- df %>%
+  group_by(Season) %>%
+  summarise(MeanViewers = mean(Viewers))
+
+# Bar plot
+ggplot(seasonal_avg, aes(x = Season, y = MeanViewers, fill = Season)) +
+  geom_bar(stat = "identity", color = "white", width = 0.7) +
+  geom_text(aes(label = round(MeanViewers, 2)), vjust = -0.5, size = 4) +
+  scale_fill_manual(values = c("#2A4D53", "#5C584F", "#92A8AC", "#D96C1A", "#3E4A59", "#A69CAC", "#1F663B")) +
+  labs(title = "Average Viewership per Season",
+       y = "Average Viewers (Millions)", x = "Season") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  ylim(0, 2.2)
+```
+
+```{r ratings_heatmap, echo=FALSE, fig.width=10, fig.height=6}
+library(tidyr)
+
+# Constructing a matrix of ratings (Seasons x Episodes)
+# NA values represent non-existent episodes (shorter seasons)
+ratings_vals <- matrix(c(
+  7.3, 7.3, 7.7, 7.7, 8.0, 7.8, 8.0, 7.7, 8.1, 8.1, 7.8, 8.3, 8.8, NA, NA, NA,
+  8.2, 8.1, 8.1, 8.1, 8.3, 8.2, 8.4, 8.8, 8.1, 8.1, 8.6, 8.4, 8.5, 8.6, 8.7, 9.2,
+  7.7, 8.1, 8.6, 8.4, 7.8, 8.0, 6.9, 7.0, 7.1, 7.2, 7.6, 7.2, 7.6, 7.5, 7.7, 7.9,
+  7.6, 7.6, 7.8, 7.9, 8.1, 7.7, 7.7, 7.9, 7.9, 9.1, 8.1, 8.6, 9.1, NA, NA, NA,
+  8.5, 8.6, 8.8, 8.4, 8.0, 8.0, 8.0, 8.3, 8.4, 8.0, 8.2, 8.7, 9.5, NA, NA, NA,
+  8.3, 8.3, 8.1, 8.3, 8.5, 8.0, 8.2, 8.0, 8.1, 8.2, 8.1, 8.5, 8.0, NA, NA, NA,
+  7.5, 8.0, 7.3, 7.8, 8.3, 7.5, 7.4, 9.0, 7.7, 8.0, 7.5, 7.5, 4.8, 6.1, 6.4, 6.7 
+), nrow = 7, byrow = TRUE)
+
+colnames(ratings_vals) <- paste0("E", 1:16)
+rownames(ratings_vals) <- paste0("S", 1:7)
+
+# Reshape data to long format for ggplot2
+heatmap_df <- as.data.frame(ratings_vals) %>%
+  mutate(Season = rownames(ratings_vals)) %>%
+  pivot_longer(cols = starts_with("E"), names_to = "Episode", values_to = "Rating")
+
+# Factorize levels to ensure correct plotting order
+heatmap_df$Episode <- factor(heatmap_df$Episode, levels = paste0("E", 1:16))
+heatmap_df$Season <- factor(heatmap_df$Season, levels = rev(paste0("S", 1:7)))
+
+# Create the heatmap using the 'Magma' color scale
+ggplot(heatmap_df, aes(x = Episode, y = Season, fill = Rating)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient(
+  low = "#5C4033", high = "#FFD700",  na.value = "white",  # Set empty/missing episodes to white
+  name = "Rating"
+) +
+  # Add rating value labels inside the tiles
+  geom_text(aes(label = sprintf("%.1f", Rating)), color = "white", size = 3.5, na.rm = TRUE) +
+  labs(title = "Episode Ratings Heatmap",
+       subtitle = "Critical reception across the series (IMDb scores)",
+       x = "Episode Number", y = "Season") +
+  theme_minimal() +
+  theme(panel.grid = element_blank())
+```
